@@ -4,7 +4,7 @@ pipeline {
         stage('Clone Code') {
             steps {
                 // Replace with your GitHub repository URL
-                git branch: 'main', url: '[https://github.com/Sushmaganda/Two-Tier-Flask-App.git](https://github.com/Sushmaganda/Two-Tier-Flask-App.git)'
+                git url: 'https://github.com/Sushmaganda/Two-Tier-Flask-App.git', branch: 'main'
             }
         }
         stage('Build Docker Image') {
