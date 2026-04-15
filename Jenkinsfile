@@ -1,24 +1,37 @@
 pipeline {
     agent any
+
     stages {
-        stage('Clone Code') {
+        stage('Checkout') {
             steps {
-                // Replace with your GitHub repository URL
-                git url: 'https://github.com/Sushmaganda/Two-Tier-Flask-App.git', branch: 'main'
+                // Jenkins automatically checks out the repo containing this Jenkinsfile
+                checkout scm
             }
         }
+
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t flask-app:latest .'
+                script {
+                    sh 'docker build -t flask-app:latest .'
+                }
             }
         }
+
         stage('Deploy with Docker Compose') {
             steps {
-                // Stop existing containers if they are running
-                sh 'docker compose down || true'
-                // Start the application, rebuilding the flask image
-                sh 'docker compose up -d --build'
+                script {
+                    sh 'docker-compose up -d --build'
+                }
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment completed successfully!'
+        }
+        failure {
+            echo 'Pipeline failed. Please check logs.'
         }
     }
 }
